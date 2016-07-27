@@ -1,8 +1,14 @@
 language: go
-go:
-- 1.5
+
 env:
-- GIMME_OS=linux GIMME_ARCH=arm
+  - GIMME_OS=linux GIMME_ARCH=arm
+
+install:
+    - go get -d -v ./...
+
+script:
+    - go build -v ./...
+
 deploy:
   provider: s3
   access_key_id:
