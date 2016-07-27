@@ -1,5 +1,8 @@
 language: go
 
+go:
+  - 1.4
+
 env:
   - GIMME_OS=linux GIMME_ARCH=arm
 
