@@ -1,7 +1,11 @@
-all: bin/loop bin/main bin/reaction-diffusion bin/sparkle bin/walk
+.PHONY: all
+all: deps
+	go build github.com/hyperturtle/pixels/scenes/loop 
+	go build github.com/hyperturtle/pixels/scenes/main 
+	go build github.com/hyperturtle/pixels/scenes/reaction-diffusion 
+	go build github.com/hyperturtle/pixels/scenes/sparkle 
+	go build github.com/hyperturtle/pixels/scenes/walk
 
-bin/%: scenes/%.go deps
-	go build -o $@ $<
-
+.PHONY: deps
 deps:
 	go get ./...
