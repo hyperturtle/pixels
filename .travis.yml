@@ -2,7 +2,7 @@ language: go
 go:
 - 1.5
 env:
-- GOOS=linux GOARCH=arm
+- GIMME_OS=linux GIMME_ARCH=arm
 deploy:
   provider: s3
   access_key_id:
