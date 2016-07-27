@@ -1,7 +1,7 @@
 package main
 
 import (
-	"../lib"
+	"github.com/hyperturtle/pixels/lib"
 	"github.com/lucasb-eyer/go-colorful"
 	"log"
 	"math/rand"
