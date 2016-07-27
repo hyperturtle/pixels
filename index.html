@@ -1,0 +1,77 @@
+<style>
+html {
+	background: #444;
+}
+#app {
+	text-align: center;
+}
+.block {
+	display: inline-block;
+	width: 4px;
+	height: 4px;
+	transition: background 0.01s linear;
+	background-color: #000;
+	margin: 6px;
+	border-radius: 5px;
+}
+</style>
+<div id="app">
+</div>
+<script>
+var pixels = [];
+var x, y, row, newEle;
+var container = document.getElementById('app');
+for (y = 0; y < 10; y ++) {
+	row = new Array(28);
+	for (x = 0; x < 28; x ++) {
+		newEle = document.createElement('span');
+		newEle.className = 'block';
+		container.appendChild(newEle);
+		if (y % 2 == 0) {
+			row[x] = newEle;
+		} else {
+			row[28-x-1] = newEle;
+		}
+	}
+	pixels = [].concat(pixels, row);
+	container.appendChild(document.createElement('br'));
+}
+console.log(pixels.length);
+
+function setPixels(dv) {
+	for (var n = 0; n < 280; n++) {
+		var color = [
+			'rgba(',
+			dv.getUint8(1+n*3),
+			',',
+			dv.getUint8(1+n*3+1),
+			',',
+			dv.getUint8(1+n*3+2),
+			',255)'
+		].join('');
+		pixels[n].setAttribute('style', ['background:', color, ';box-shadow:0 0 10px ', color].join(''));
+	}
+}
+function init() {
+	var connection = new WebSocket('ws://' + location.host + '/echo');
+	connection.binaryType = "arraybuffer";
+	connection.onmessage = function (e) {
+		if (e.data instanceof ArrayBuffer) {
+			var dv = new DataView(e.data);
+			setPixels(dv);
+		} else {
+			console.log(e);
+		}
+	};
+	connection.onerror = function (error) {
+		console.log('error: ' + error);
+	};
+	connection.onopen = function () {
+	};
+	connection.onclose = function () {
+		console.log('close');
+		setTimeout(init, 1000);
+	};
+}
+init();
+</script>
