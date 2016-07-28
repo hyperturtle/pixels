@@ -13,7 +13,7 @@ before_install:
   - go env
 
 env:
-  - GIMME_OS=linux GIMME_ARCH=arm
+  - GIMME_TYPE=binary GIMME_OS=linux GIMME_ARCH=arm
 
 install:
     - go get -d -v ./...
