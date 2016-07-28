@@ -66,7 +66,7 @@ type Life struct {
 // NewLife returns a new Life game state with a random initial state.
 func NewLife(w, h int) *Life {
 	a := NewField(w, h)
-	for i := 0; i < (w * h / 4); i++ {
+	for i := 0; i < (w * h / 2); i++ {
 		a.Set(rand.Intn(w), rand.Intn(h), true)
 	}
 	return &Life{
@@ -77,14 +77,29 @@ func NewLife(w, h int) *Life {
 
 // Step advances the game by one instant, recomputing and updating all cells.
 func (l *Life) Step(s lib.Screen) {
+	var z = 0
+
 	// Update the state of the next field (b) from the current field (a).
 	for y := 0; y < l.h; y++ {
 		for x := 0; x < l.w; x++ {
 			l.b.Set(x, y, l.a.Next(x, y))
 			if l.b.Alive(x, y) {
-				s.Set(x, y, 255, 255, 0)
+				if (z == 3) {
+					z = 0
+				}
+				if z == 1 {
+					s.Set(x, y, 255, 0, 0)
+					z++
+				} else if z == 0 {
+					s.Set(x, y, 0, 255, 0)
+					z++
+				} else if z == 2 {
+					s.Set(x, y, 0, 0, 255)
+					z++
+				}
+
 			} else {
-				s.Set(x, y, 125, 125, 0)
+				s.Set(x, y, 0, 0, 0)
 			}
 		}
 	}
