@@ -1,20 +1,19 @@
-# language: go
+language: go
 
-# go:
-#   - 1.4
+go:
+  - tip
 
-# before_install:
-#   - curl -o gimme -sL https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
-#   - chmod u+x gimme
-#   - unset GOROOT GOTOOLDIR
-#   - eval "$(./gimme 1.4)"
-#   - rm gimme
-#   - go version
-#   - go env
+before_install:
+  - curl -o gimme -sL https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
+  - chmod u+x gimme
+  - unset GOROOT GOTOOLDIR
+  - eval "$(./gimme 1.4)"
+  - rm gimme
+  - go version
+  - go env
 
 env:
-  # - GIMME_OS=linux GIMME_ARCH=arm
-  - GOOS=linux GOARCH=arm
+  - GIMME_OS=linux GIMME_ARCH=arm
 
 install:
     - go get -d -v ./...
