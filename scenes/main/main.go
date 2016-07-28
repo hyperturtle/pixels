@@ -29,7 +29,7 @@ var colors [4][16]int = [4][16]int{
 
 func getPixel(x, y int) (r, g, b byte) {
 	if colors[y][x] != 0 {
-		return 8, 8, 8
+		return 255, 255, 255
 	}
 	return 0, 0, 0
 }
