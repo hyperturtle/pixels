@@ -84,7 +84,7 @@ func (l *Life) Step(s lib.Screen) {
 			if l.b.Alive(x, y) {
 				s.Set(x, y, 255, 0, 0)
 			} else {
-				s.Set(x, y, 255, 255, 0)
+				s.Set(x, y, 0, 0, 0)
 			}
 		}
 	}
@@ -112,10 +112,10 @@ func main() {
 	screen := lib.NewScreen()
 	for {
 		l := NewLife(28, 10)
-		for i := 0; i < 16*15; i++ {
+		for i := 0; i < 4*15; i++ {
 			l.Step(screen)
 			screen.Dump()
-			time.Sleep(time.Second / 16)
+			time.Sleep(time.Second / 4)
 		}
 	}
 }
