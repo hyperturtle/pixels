@@ -82,9 +82,9 @@ func (l *Life) Step(s lib.Screen) {
 		for x := 0; x < l.w; x++ {
 			l.b.Set(x, y, l.a.Next(x, y))
 			if l.b.Alive(x, y) {
-				s.Set(x, y, 255, 255, 255)
+				s.Set(x, y, 255, 0, 0)
 			} else {
-				s.Set(x, y, 0, 0, 0)
+				s.Set(x, y, 255, 255, 0)
 			}
 		}
 	}
