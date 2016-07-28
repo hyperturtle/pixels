@@ -1,7 +1,7 @@
 language: go
 
 go:
-  - tip
+  - 1.6
 
 before_install:
   - curl -o gimme -sL https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
