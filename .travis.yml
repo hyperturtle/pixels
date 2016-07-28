@@ -1,5 +1,7 @@
 language: go
 
+go:
+  - 1.6
 
 before_install:
   - curl -o gimme -sL https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
@@ -11,7 +13,7 @@ before_install:
   - go env
 
 env:
-  - GIMME_TYPE=binary GIMME_OS=linux GIMME_ARCH=arm
+  - GIMME_OS=linux GIMME_ARCH=arm
 
 install:
     - go get -d -v ./...
