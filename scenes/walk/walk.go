@@ -24,7 +24,7 @@ func main() {
 		walkers[i].x = rand.Int() % 28
 		walkers[i].y = rand.Int() % 10
 		d := float64(i) / float64(count)
-		r, g, b := colorful.Hcl(d*360, 0.5, 0.1).RGB255()
+		r, g, b := colorful.Hcl(d*360, 1.0, 0.1).RGB255()
 
 		walkers[i].r = r
 		walkers[i].g = g
