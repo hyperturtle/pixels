@@ -16,9 +16,9 @@ func main() {
 			if (p-1)%3 == 0 {
 
 				if rand.Int()%1000 == 0 {
-					screen.Data[p] = 32
-					screen.Data[p+1] = 32
-					screen.Data[p+2] = 32
+					screen.Data[p] = 255
+					screen.Data[p+1] = 255
+					screen.Data[p+2] = 255
 				}
 			}
 		}
