@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/hyperturtle/pixels/lib"
+	"github.com/lucasb-eyer/go-colorful"
 )
 
 var bits []uint = []uint{
@@ -78,7 +79,8 @@ func drawLetter(screen lib.Screen, sx, sy int, letter rune) {
 			if r == 0 {
 				screen.Set(sx+x, sy+y, 0, 0, 0)
 			} else {
-				screen.Set(sx+x, sy+y, 255, 255, 255)
+				r, g, b := palette[y].RGB255()
+				screen.Set(sx+x, sy+y, r, g, b)
 			}
 		}
 	}
@@ -92,10 +94,22 @@ func drawWord(screen lib.Screen, x, y int, word string) {
 	}
 }
 
+var palette [5]colorful.Color
+
+func init() {
+	c1, _ := colorful.Hex("#FFFF00")
+	c2, _ := colorful.Hex("#FF0000")
+
+	for i := 0; i < 5; i++ {
+		d := float64(i) / 5.0
+		palette[i] = c2.BlendHsv(c1, d)
+	}
+}
+
 func main() {
 	screen := lib.NewScreen()
 	for {
-		drawWord(screen, 6, 2, "!?!?")
+		drawWord(screen, 6, 2, "ALEX")
 		screen.Dump()
 	}
 }
