@@ -4,16 +4,16 @@ go:
   - 1.6
 
 before_install:
-  - curl -o gimme -sL https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
-  - chmod u+x gimme
-  - unset GOROOT GOTOOLDIR
-  - eval "$(./gimme 1.4)"
-  - rm gimme
-  - go version
-  - go env
+  - curl -o go.tar.gz -sL https://storage.googleapis.com/golang/go1.6.3.linux-amd64.tar.gz
+  - tar -C $HOME -xf go.tar.gz
+  - rm go.tar.gz
+  - export GOROOT="${HOME}/go"
+  - export PATH="${GOROOT}/bin:${PATH}"
+  - export GOOS="${MY_GOOS}"
+  - export GOARCH="${MY_GOARCH}" 
 
 env:
-  - GIMME_OS=linux GIMME_ARCH=arm
+  - MY_GOOS=linux MY_GOARCH=arm
 
 install:
     - go get -d -v ./...
