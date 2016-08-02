@@ -36,6 +36,9 @@ func (s Screen) Get(x, y int) (r, g, b byte) {
 }
 
 func (s Screen) Set(x, y int, r, g, b byte) {
+	if x >= WIDTH || y >= HEIGHT {
+		panic("out of bounds")
+	}
 	if y%2 == 1 {
 		x = WIDTH - x - 1
 	}

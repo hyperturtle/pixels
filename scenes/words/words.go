@@ -7,75 +7,81 @@ import (
 
 var bits []uint = []uint{
 	0,
-	8338,
-	45,
-	11962,
-	32223,
-	17057,
-	11898,
-	18,
-	17556,
-	5265,
-	2746,
-	1488,
-	5120,
-	448,
-	8192,
-	5812,
-	15214,
-	29850,
-	29991,
-	31143,
-	18921,
-	31183,
-	31695,
-	18727,
-	31727,
-	18927,
-	1040,
-	9232,
-	17492,
-	3640,
-	5393,
-	8615,
+	137577500804,
 	0,
-	24426,
-	15083,
-	25166,
-	15211,
-	29391,
-	4815,
-	31567,
-	23533,
-	29847,
-	11047,
-	23277,
-	29257,
-	23421,
-	24573,
-	31599,
-	8047,
-	12143,
-	22379,
-	30863,
-	9367,
-	31597,
-	12141,
-	24429,
-	23213,
-	9389,
-	29351,
-	25750,
-	19609,
-	13459,
-	42,
-	28672,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	502097700654,
+	485469851844,
+	1066297213486,
+	533130101263,
+	567490364977,
+	533130085439,
+	499878691902,
+	35469271583,
+	499878676014,
+	567490332206,
+	1065151889408,
+	1065151889408,
+	1065151889408,
+	1065151889408,
+	1065151889408,
+	137582102062,
+	0,
+	602958448174,
+	534238447151,
+	499861472814,
+	534238512687,
+	1066260726847,
+	35468575807,
+	499879150654,
+	602958448177,
+	485469851790,
+	499844137503,
+	611274962737,
+	1066260268065,
+	602957993841,
+	611820686961,
+	499878774318,
+	35468592687,
+	840590476846,
+	593963304495,
+	533127529534,
+	141872468127,
+	499878774321,
+	142080525873,
+	355062040113,
+	602950216241,
+	499878151729,
+	1066333004319,
+	0,
+	0,
+	0,
+	0,
+	0,
 }
 
+const height = 8
+const width = 5
+
 func drawLetter(screen lib.Screen, sx, sy int, letter rune) {
-	for y := 0; y < 5; y++ {
-		for x := 0; x < 3; x++ {
-			r := bits[int(letter)-32] & (1 << uint(y*3+x))
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			if sx+x >= lib.WIDTH || sy+y >= lib.HEIGHT || sx+x < 0 || sy+y < 0 {
+				continue
+			}
+			r := bits[int(letter)-32] & (1 << uint(y*width+x))
 			if r == 0 {
 				screen.Set(sx+x, sy+y, 0, 0, 0)
 			} else {
@@ -89,27 +95,44 @@ func drawLetter(screen lib.Screen, sx, sy int, letter rune) {
 func drawWord(screen lib.Screen, x, y int, word string) {
 	sx := x
 	for _, letter := range word {
+		if sx >= lib.WIDTH {
+			return
+		}
 		drawLetter(screen, sx, y, letter)
-		sx += 4
+
+		if sx+width >= 0 && sx+width < lib.WIDTH {
+			screen.Set(sx+width, y, 0, 0, 0)
+			screen.Set(sx+width, y+1, 0, 0, 0)
+			screen.Set(sx+width, y+2, 0, 0, 0)
+			screen.Set(sx+width, y+3, 0, 0, 0)
+			screen.Set(sx+width, y+4, 0, 0, 0)
+			screen.Set(sx+width, y+5, 0, 0, 0)
+			screen.Set(sx+width, y+6, 0, 0, 0)
+			screen.Set(sx+width, y+7, 0, 0, 0)
+		}
+
+		sx += width + 1
 	}
 }
 
-var palette [5]colorful.Color
+var palette [height]colorful.Color
 
 func init() {
 	c1, _ := colorful.Hex("#FFFF00")
 	c2, _ := colorful.Hex("#FF0000")
 
-	for i := 0; i < 5; i++ {
-		d := float64(i) / 5.0
+	for i := 0; i < height; i++ {
+		d := float64(i) / float64(height)
 		palette[i] = c2.BlendHsv(c1, d)
 	}
 }
 
 func main() {
 	screen := lib.NewScreen()
+	i := 0
 	for {
-		drawWord(screen, 6, 2, "ALEX")
+		drawWord(screen, -i, 1, "SHOOT ALEX SHOOT")
+		i = (i + 1) % (11 * 6)
 		screen.Dump()
 	}
 }
