@@ -41,7 +41,10 @@ func main() {
 					current = current<<1 | 1
 				}
 			}
+			if y == 4 || y == 0 {
+				fmt.Printf("%d,\n", current)
+				current = 0
+			}
 		}
-		fmt.Printf("%d,\n", current)
 	}
 }
