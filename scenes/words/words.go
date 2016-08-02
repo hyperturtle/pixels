@@ -201,8 +201,8 @@ func main() {
 	screen := lib.NewScreen()
 	i := 0
 	for {
-		drawWord(screen, -i, 1, "SHOOT ALEX SHOOT")
-		i = (i + 1) % (11 * 6)
+		drawWord(screen, -i, 1, "RUN ALEX RUN")
+		i = (i + 1) % (9 * 6)
 		screen.Dump()
 	}
 }
