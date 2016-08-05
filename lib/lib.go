@@ -73,6 +73,7 @@ func init() {
 }
 
 func serialServer(serialPort string) {
+	time.Sleep(time.Second)
 	flag.Parse()
 	log.Println("starting")
 	c := &serial.Config{Name: serialPort, Baud: baud}
@@ -94,6 +95,7 @@ func serialServer(serialPort string) {
 }
 
 func webSocketServer() {
+	time.Sleep(time.Second)
 	flag.Parse()
 	http.Handle("/echo", websocket.Handler(echoServer))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
