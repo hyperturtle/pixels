@@ -69,10 +69,10 @@ func init() {
 		go webSocketServer()
 		return
 	}
-	go serialServer(serial)
+	go serialServer()
 }
 
-func serialServer(serialPort string) {
+func serialServer() {
 	time.Sleep(time.Second)
 	flag.Parse()
 	log.Println("starting")
