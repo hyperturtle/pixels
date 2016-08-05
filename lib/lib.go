@@ -75,8 +75,8 @@ func init() {
 func serialServer() {
 	time.Sleep(time.Second)
 	flag.Parse()
-	log.Println("starting")
 	c := &serial.Config{Name: serialPort, Baud: baud}
+	log.Println("starting", c)
 	s, err := serial.OpenPort(c)
 	if err != nil {
 		log.Fatal(err)
@@ -102,7 +102,7 @@ func webSocketServer() {
 		http.ServeFile(w, r, "index.html")
 	})
 
-	log.Println("starting")
+	log.Println("starting:12345")
 	err := http.ListenAndServe(":12345", nil)
 	if err != nil {
 		panic("ListenAndServe: " + err.Error())
