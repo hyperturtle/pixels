@@ -168,7 +168,7 @@ func main() {
 			a := logScale(amt)
 			for y := 0; y < 10; y++ {
 				if y < a {
-					r, g, b := palette[a].RGB255()
+					r, g, b := palette[y].RGB255()
 					screen.Set(27-x, 9-y, r, g, b)
 				} else if x < 10 {
 					screen.Set(27-x, 9-y, 0, 0, 32)
