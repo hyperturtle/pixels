@@ -59,13 +59,12 @@ var baud int
 var serialPort string
 
 func init() {
-	var serial string
 	flag.StringVar(&serialPort, "serial", "", "serial port")
 	flag.IntVar(&baud, "baud", 500000, "baud rate")
 
 	NextFrame = make(chan *Screen)
 
-	if serial == "" {
+	if serialPort == "" {
 		go webSocketServer()
 		return
 	}
