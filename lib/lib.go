@@ -56,12 +56,12 @@ func (s Screen) Dump() {
 var NextFrame chan *Screen
 
 var baud int
+var serialPort string
 
 func init() {
 	var serial string
-	flag.StringVar(&serial, "serial", "", "serial port")
+	flag.StringVar(&serialPort, "serial", "", "serial port")
 	flag.IntVar(&baud, "baud", 500000, "baud rate")
-	flag.Parse()
 
 	NextFrame = make(chan *Screen)
 
@@ -73,6 +73,7 @@ func init() {
 }
 
 func serialServer(serialPort string) {
+	flag.Parse()
 	log.Println("starting")
 	c := &serial.Config{Name: serialPort, Baud: baud}
 	s, err := serial.OpenPort(c)
@@ -93,6 +94,7 @@ func serialServer(serialPort string) {
 }
 
 func webSocketServer() {
+	flag.Parse()
 	http.Handle("/echo", websocket.Handler(echoServer))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "index.html")
