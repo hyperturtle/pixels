@@ -64,16 +64,18 @@ func init() {
 
 	NextFrame = make(chan *Screen)
 
-	if serialPort == "" {
-		go webSocketServer()
-		return
-	}
-	go serialServer()
+	go func() {
+		time.Sleep(time.Second)
+		flag.Parse()
+		if serialPort == "" {
+			webSocketServer()
+			return
+		}
+		serialServer()
+	}()
 }
 
 func serialServer() {
-	time.Sleep(time.Second)
-	flag.Parse()
 	c := &serial.Config{Name: serialPort, Baud: baud}
 	log.Println("starting", c)
 	s, err := serial.OpenPort(c)
@@ -94,8 +96,6 @@ func serialServer() {
 }
 
 func webSocketServer() {
-	time.Sleep(time.Second)
-	flag.Parse()
 	http.Handle("/echo", websocket.Handler(echoServer))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "index.html")
