@@ -159,26 +159,35 @@ func init() {
 	//flag.Parse()
 }
 
+func setScreen(screen lib.Screen) {
+	for x, amt := range display() {
+		a := logScale(amt)
+		for y := 0; y < 10; y++ {
+			if y < a {
+				r, g, b := palette[y].RGB255()
+				screen.Set(27-x, 9-y, r, g, b)
+			} else if x < 10 {
+				screen.Set(27-x, 9-y, 0, 0, 32)
+			} else {
+				screen.Set(27-x, 9-y, 0, 0, 0)
+			}
+		}
+	}
+	screen.Dump()
+}
+
 func main() {
 	screen := lib.NewScreen()
 	histogram = make([]int, 4320)
 	for {
-		histogram = append([]int{getCount()}, histogram...)[:4320]
-		for x, amt := range display() {
-			a := logScale(amt)
-			for y := 0; y < 10; y++ {
-				if y < a {
-					r, g, b := palette[y].RGB255()
-					screen.Set(27-x, 9-y, r, g, b)
-				} else if x < 10 {
-					screen.Set(27-x, 9-y, 0, 0, 32)
-				} else {
-					screen.Set(27-x, 9-y, 0, 0, 0)
-				}
-			}
+		for i := 0; i < 11; i++ {
+			histogram[0] = getCount()
+			setScreen(screen)
+			time.Sleep(time.Second * 5)
 		}
+		histogram = append([]int{getCount()}, histogram...)[:4320]
+		setScreen(screen)
 		log.Println(display())
-		screen.Dump()
-		time.Sleep(time.Minute)
+		time.Sleep(time.Second * 5)
 	}
 }
