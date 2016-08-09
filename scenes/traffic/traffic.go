@@ -142,14 +142,25 @@ func display() [28]int {
 }
 
 var palette [10]colorful.Color
+var paletteBg [10]colorful.Color
 
 func init() {
-	c1, _ := colorful.Hex("#FF0000")
-	c2, _ := colorful.Hex("#00FF00")
+	{
+		c1, _ := colorful.Hex("#FF0000")
+		c2, _ := colorful.Hex("#00AA00")
+		for i := 0; i < 10; i++ {
+			d := float64(i) / float64(10)
+			palette[i] = c2.BlendHsv(c1, d)
+		}
+	}
 
-	for i := 0; i < 10; i++ {
-		d := float64(i) / float64(10)
-		palette[i] = c2.BlendHsv(c1, d)
+	{
+		c1 := colorful.Color{0.0, 0.0, 0.5}
+		c2 := colorful.Color{0.1, 0.0, 0.0}
+		for i := 0; i < 10; i++ {
+			d := float64(i) / float64(10)
+			paletteBg[i] = c2.BlendHsv(c1, d)
+		}
 	}
 
 	flag.StringVar(&ga, "ga", "", "ga")
@@ -159,18 +170,46 @@ func init() {
 	//flag.Parse()
 }
 
+var blink = true
+
 func setScreen(screen lib.Screen) {
-	for x, amt := range display() {
-		a := logScale(amt)
+	dis := display()
+	max := 0
+	for _, amt := range dis {
+		if amt > max {
+			max = amt
+		}
+	}
+	isLog := max > 9
+	for x, amt := range dis {
+		var a int
+		if isLog {
+			a = logScale(amt)
+		} else {
+			a = amt
+		}
 		for y := 0; y < 10; y++ {
+			r, g, b := byte(0), byte(0), byte(0)
 			if y < a {
-				r, g, b := palette[y].RGB255()
-				screen.Set(27-x, 9-y, r, g, b)
+				r, g, b = palette[y].RGB255()
 			} else if x < 10 {
-				screen.Set(27-x, 9-y, 0, 0, 32)
+				r, g, b = paletteBg[x].RGB255()
+			} else if x < 15 {
+				r, g, b = paletteBg[(x-10)*2].RGB255()
+			} else if x < 25 {
+				r, g, b = paletteBg[x-15].RGB255()
 			} else {
-				screen.Set(27-x, 9-y, 0, 0, 0)
+				r, g, b = paletteBg[(x-25)*3].RGB255()
 			}
+			screen.Set(27-x, 9-y, r, g, b)
+		}
+	}
+	blink = !blink
+	if blink {
+		if isLog {
+			screen.Set(0, 0, 255, 0, 0)
+		} else {
+			screen.Set(0, 0, 0, 255, 0)
 		}
 	}
 	screen.Dump()
